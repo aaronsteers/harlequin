@@ -127,15 +127,14 @@ class Harlequin(App):
         else:
             table = pane.get_table()
             table.clear(columns=True)
-            relation = worker.result
-            if relation:  # select query
+            if relation := worker.result:
                 self.relation = relation
             elif bool(query_text.strip()):  # DDL/DML query
                 pane.set_responsive()
                 pane.show_table()
                 self.data = []
                 self.update_schema_data()
-            else:  # blank query
+            else:
                 pane.set_responsive(did_run=False)
                 pane.show_table()
                 self.data = []
@@ -175,8 +174,7 @@ class Harlequin(App):
 
     @work(exclusive=True, exit_on_error=False)  # type: ignore
     def build_relation(self, query_text: str) -> duckdb.DuckDBPyRelation | None:
-        relation = self.connection.sql(query_text)
-        return relation
+        return self.connection.sql(query_text)
 
     @work(exclusive=True)
     def fetch_relation_data(self, relation: duckdb.DuckDBPyRelation) -> None:

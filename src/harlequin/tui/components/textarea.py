@@ -212,18 +212,18 @@ class TextInput(Static, can_focus=True):
         self.cursor = Cursor(self.cursor.lno, self.cursor.pos + 1)
 
     def _insert_closed_character_at_cursor(self, character: str) -> None:
-        closers = {
-            '"': '"',
-            "'": "'",
-            "(": ")",
-            "[": "]",
-            "{": "}",
-        }
         if self._get_character_at_cursor() == character:
             self.cursor = Cursor(self.cursor.lno, self.cursor.pos + 1)
         else:
             prev = self._get_character_before_cursor()
             self._insert_character_at_cursor(character)
+            closers = {
+                '"': '"',
+                "'": "'",
+                "(": ")",
+                "[": "]",
+                "{": "}",
+            }
             if (
                 character in closers
                 and self.cursor.pos == len(self.lines[self.cursor.lno]) - 1
