@@ -97,11 +97,9 @@ class SchemaViewer(Tree[str | None]):
         cls, node: TreeNode[str | None]
     ) -> tuple[list[str], str | None]:
         expanded_nodes = []
-        selected_node = None
         if node.is_expanded and node.data is not None:
             expanded_nodes.append(node.data)
-        if node._selected and node.data is not None:
-            selected_node = node.data
+        selected_node = node.data if node._selected and node.data is not None else None
         for child in node.children:
             expanded_children, selected_child = cls.get_node_states(child)
             expanded_nodes.extend(expanded_children)
